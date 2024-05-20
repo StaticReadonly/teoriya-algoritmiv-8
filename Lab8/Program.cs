@@ -8,28 +8,36 @@ namespace Lab8
         {
             Graph graph = CreateGraph();
 
-            //var res = graph.AStarAlgorithm("Balikpapan", "Sotek");
-            //var res = graph.AStarAlgorithm("Loa Kulu", "Djenebora");
-            //var res = graph.AStarAlgorithm("Lemper", "Balikpapan");
-            var res = graph.AStarAlgorithm("Buat", "Muarasiram");
+            //string from = "Balikpapan"; string to = "Sotek";
+            //string from = "Loa Kulu"; string to = "Djenebora";
+            //string from = "Lemper"; string to = "Balikpapan";
+            string from = "Buat"; string to = "Muarasiram";
 
+            //Greedy search
+            var res1 = graph.GreedySearch(from, to);
             LinkedList<City> route = new LinkedList<City>();
-            City? next = res;
+            City? next = res1;
+            while (next != null)
+            {
+                route.AddFirst(next);
+                next = next.Prev;
+            }
+            Console.WriteLine("=== Greedy search ===");
+            Console.WriteLine($"{from}-{to} Distance: {res1.Total}km Route:");
+            Console.WriteLine(string.Join(" -> ", route));
+
+            //A* search
+            var res2 = graph.AStarAlgorithm(from, to);
+            route = new LinkedList<City>();
+            next = res2;
             while(next != null)
             {
                 route.AddFirst(next);
                 next = next.Prev;
             }
-
             Console.WriteLine("=== A* search ===");
-            Console.WriteLine("Total: " + res.Total);
-            Console.WriteLine("Route:");
-            foreach(var city in route)
-            {
-                Console.WriteLine(city.Name);
-            }
-
-
+            Console.WriteLine($"{from}-{to} Distance: {res2.Total}km Route:");
+            Console.WriteLine(string.Join(" -> ", route));
         }
 
         static Graph CreateGraph()

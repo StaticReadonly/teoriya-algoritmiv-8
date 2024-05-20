@@ -19,5 +19,10 @@
             var c = (City)obj;
             return Name == c.Name && Total == c.Total;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

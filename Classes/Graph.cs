@@ -135,5 +135,61 @@ namespace Classes
 
             return res;
         }
+
+        public City GreedySearch(string from, string to)
+        {
+            HashSet<string> memo = new HashSet<string>() { from };
+            City city = new City()
+            {
+                Name = from,
+                F = 0,
+                H = 0,
+                Total = 0
+            };
+
+            return _GreedySearch(city, memo, to);
+        }
+
+        private City _GreedySearch(City current, HashSet<string> memo, string to)
+        {
+            int[] roadMatrix = _roadMatrix[_Cities[current.Name]];
+
+            int min = -1;
+            for(int i = 0; i < roadMatrix.Length; i++)
+            {
+                if (roadMatrix[i] == int.MaxValue || memo.Contains(_Indexes[i]))
+                    continue;
+
+                if (_Indexes[i] == to)
+                {
+                    City c = new City()
+                    {
+                        Prev = current,
+                        Name = _Indexes[i],
+                        F = roadMatrix[i],
+                        H = 0
+                    };
+                    c.Total = current.Total + c.F;
+                    return c;
+                }
+
+                if (min == -1)
+                    min = i;
+                else if (roadMatrix[min] < roadMatrix[i])
+                    min = i;
+            }
+
+            City city = new City()
+            {
+                Prev = current,
+                Name = _Indexes[min],
+                F = roadMatrix[min],
+                H = 0
+            };
+            city.Total = current.Total + city.F;
+            memo.Add(_Indexes[min]);
+
+            return _GreedySearch(city, memo, to);
+        }
     }
 }
