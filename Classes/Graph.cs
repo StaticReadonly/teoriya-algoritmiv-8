@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Classes
+﻿namespace Classes
 {
     public class Graph
     {
@@ -150,13 +148,16 @@ namespace Classes
             return _GreedySearch(city, memo, to);
         }
 
-        private City _GreedySearch(City current, HashSet<string> memo, string to)
+        private City _GreedySearch(City current, HashSet<string> memo, string to, string? ignore = null)
         {
             int[] roadMatrix = _roadMatrix[_Cities[current.Name]];
 
             int min = -1;
             for(int i = 0; i < roadMatrix.Length; i++)
             {
+                if (ignore != null && ignore == _Indexes[i])
+                    continue;
+
                 if (roadMatrix[i] == int.MaxValue || memo.Contains(_Indexes[i]))
                     continue;
 
@@ -177,6 +178,13 @@ namespace Classes
                     min = i;
                 else if (roadMatrix[min] < roadMatrix[i])
                     min = i;
+            }
+
+            //If all routes where added inside memo try to return to previous city and change the route
+            if (min == -1)
+            {
+                memo.Remove(current.Name);
+                return _GreedySearch(current.Prev, memo, to, current.Name);
             }
 
             City city = new City()

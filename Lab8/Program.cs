@@ -11,7 +11,8 @@ namespace Lab8
             //string from = "Balikpapan"; string to = "Sotek";
             //string from = "Loa Kulu"; string to = "Djenebora";
             //string from = "Lemper"; string to = "Balikpapan";
-            string from = "Buat"; string to = "Muarasiram";
+            //string from = "Buat"; string to = "Muarasiram";
+            string from = "Sotek"; string to = "Induandjat";
 
             //Greedy search
             var res1 = graph.GreedySearch(from, to);
